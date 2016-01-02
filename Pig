@@ -1,0 +1,142 @@
+// An example of the game of Pig done in C++
+
+#include <iostream> 
+#include <cstdlib> 
+#include <ctime> 
+using namespace std;
+
+
+	//Function for dice
+    int rollDie() {
+	int value = rand() % 6; 
+	// random function
+	return value + 1;
+	
+}
+// name of game
+void GameName()
+{
+
+    cout << "\n\n This is The Game of Pig." << endl;
+}
+
+
+
+//final scores
+int endGame(int YourScore, int computerScore) {
+	char reply;
+	cout << "Game over!" << endl;
+	cout << "Your score: " << YourScore << "." << endl;
+	cout << "Computer score: " << computerScore << "." << endl;
+	cout << "Play again? Y/N: ";
+	cin >> reply;
+	if (reply == 'Y') {
+		return 1;
+	}
+	else if (reply == 'y'){
+		return 1;
+	}
+	else 
+	{
+		return 0;
+	}
+}
+
+int playerTurn() {
+	int turnScore = 0;
+	char response = 'R';
+	bool roll = true;
+	while (roll) {
+		int rolled = rollDie();
+		if (rolled == 1) {
+			turnScore = 0;
+			rolled = 0;
+			cout << "You rolled a one! No points this turn." << endl;
+			roll = false;
+		}
+		turnScore = turnScore + rolled;
+			// to see if player stops or continues
+		if (turnScore != 0) {
+			cout << "You rolled a " << rolled << ". Your score this turn is " << turnScore << "." << endl;
+			cout << "Would you like to Roll again or stop? Type either R to continue rolling dice or H to hold." << endl;
+			cin >> response;
+			switch (response) {
+				case 'H':
+					roll = false;
+				case 'h':
+					roll = false;
+			}
+		}
+	}
+	return turnScore;
+}
+
+
+int compTurn() {
+	
+	int computerTurnScore = 0;
+	bool computerRolling = true;
+	while (computerRolling) {
+		int computerRolled = rollDie();
+		if (computerRolled == 1){
+			computerTurnScore = 0;
+			computerRolled = 0;
+			cout << "Computer rolled a one! No points this turn." << endl;
+			computerRolling = false;
+		}
+		computerTurnScore = computerTurnScore + computerRolled;
+		if (computerTurnScore != 0){
+		cout << "The Computer rolled a " << computerRolled << ". Its score this time is " << computerTurnScore << "." << endl;
+		}if (computerTurnScore >= 20) {
+			computerRolling = false;
+		}
+	}
+	return computerTurnScore;
+}
+
+
+int main( ) {
+using namespace std;
+    GameName();
+
+	//variables
+
+	srand(time(0));
+	int playerScore = 0;
+	int compScore = 0;
+	bool playing = true;
+	// starts game
+	
+	while (playing) {
+	    
+		cout << "Your turn." << endl;
+		int turnScore = playerTurn();
+		playerScore = playerScore + turnScore;
+		cout << "Your score so far is " << playerScore << "." << endl;
+		//checks to see who's winning
+		if (playerScore >= 100) {
+			cout << "You WIN." << endl;
+			playing = false;
+		}
+		
+		cout << "Computer's turn." << endl;
+		int computerTurnScore = compTurn();
+		compScore = computerTurnScore + compScore;
+		cout << "Computer's score so far is " << compScore << "." << endl;
+		if (compScore >= 100) {
+			cout << "The computer wins! You LOSE." << endl;
+			playing = false;
+		}
+	}
+    
+	int x = endGame(playerScore, compScore);
+		if (x == 1) 
+		{
+			main();
+			GameName();
+		}
+		else {
+			return 0;
+		}
+	return 0;
+}
